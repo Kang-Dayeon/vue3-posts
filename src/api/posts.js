@@ -9,3 +9,7 @@ const posts = [
 export function getPosts() {
 	return posts;
 }
+
+export function getPageById(id) {
+	return posts.find(item => item.id === id);
+}

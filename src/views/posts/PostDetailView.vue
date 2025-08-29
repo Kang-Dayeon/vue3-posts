@@ -1,8 +1,8 @@
 <template>
 	<div>
-		<h2>Title</h2>
-		<p>content</p>
-		<p class="text-muted">20202-02-02</p>
+		<h2>{{ form.title }}</h2>
+		<p>{{ form.content }}</p>
+		<p class="text-muted">{{ form.createdAt }}</p>
 		<hr class="my-4" />
 		<div class="row g-2">
 			<div class="col-auto">
@@ -28,13 +28,29 @@
 </template>
 
 <script setup>
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
+import { getPageById } from '@/api/posts';
+import { ref } from 'vue';
 
-const route = useRoute();
+const props = defineProps({
+	id: Number,
+});
+
+// const route = useRoute();
 const router = useRouter();
-const id = route.params.id;
+// const id = route.params.id;
+
+const form = ref({});
+
+const fetchPost = () => {
+	const data = getPageById(props.id);
+	form.value = { ...data };
+};
+fetchPost();
+
 const goListPage = () => router.push({ name: 'PostList' });
-const goEditPage = () => router.push({ name: 'PostEdit', params: { id } });
+const goEditPage = () =>
+	router.push({ name: 'PostEdit', params: { id: props.id } });
 </script>
 
 <style lang="scss" scoped></style>
